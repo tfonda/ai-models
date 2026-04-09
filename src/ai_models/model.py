@@ -530,6 +530,11 @@ class Model:
     def constant_fields(self):
         raise NotImplementedError("constant_fields")
 
+    def save_input_fields(self, path):
+        LOG.info("Saving input fields to %s", path)
+        self.all_fields.save(path)
+        LOG.info("Input fields saved to %s", path)
+
     def write_input_fields(
         self,
         fields,
