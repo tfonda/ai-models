@@ -210,6 +210,12 @@ def _main(argv):
     )
 
     parser.add_argument(
+        "--save-input",
+        metavar="FILE",
+        help="Save the retrieved input fields to a local GRIB file.",
+    )
+
+    parser.add_argument(
         "--only-gpu",
         help="Fail if GPU is not available",
         action="store_true",
@@ -330,6 +336,13 @@ def run(cfg: dict, model_args: list):
     if cfg["assets_list"]:
         model.print_assets_list()
         sys.exit(0)
+
+    if cfg.get("save_input"):
+        try:
+            model.save_input_fields(cfg["save_input"])
+        except Exception as e:
+            LOG.exception("Failed to save input fields to %s: %s", cfg["save_input"], e)
+            sys.exit(1)
 
     try:
         model.run()
